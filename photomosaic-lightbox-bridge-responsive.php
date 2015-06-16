@@ -5,7 +5,7 @@
     Description: Use Responsive Lightbox as your PhotoMosaic lightbox.  Requires the <strong>Responsive Lightbox</strong> plugin (which can be installed using the "Lightbox Plugin Details" link to the left).
     Author: Michael Kafka
     Author URI: http://www.codecanyon.net/user/makfak?ref=makfak
-    Version: 0.1
+    Version: 0.2
     GitHub Plugin URI: daylifemike/photomosaic-lightbox-bridge-responsive
 */
 
@@ -16,7 +16,7 @@ class PhotoMosaic_Lightbox_Bridge_Responsive {
     protected $plugin_name = 'photomosaic-lightbox-bridge-responsive';
     protected $plugin_slug = 'responsive';
     protected $plugin_bridge = 'responsive-lightbox';
-    protected $version = '0.1';
+    protected $version = '0.2';
 
     public function __construct() {
         add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
@@ -31,22 +31,11 @@ class PhotoMosaic_Lightbox_Bridge_Responsive {
         if ( !class_exists('PhotoMosaic') ) {
             $this->oops();
         } else {
-            // wp_enqueue_script(
-            //     $this->plugin_name,
-            //     plugins_url('/'. $this->plugin_name .'.js', __FILE__ ),
-            //     array( $photomosaic->get_plugin_name() . '-localize' ),
-            //     $this->version,
-            //     true
-            // );
-
-            $photomosaic->localize(
-                $photomosaic->get_plugin_name() . '-localize',
-                'PhotoMosaic.LightboxBridge.' . $this->plugin_slug,
-                'function ($, $mosaic, $items) {
-                    $mosaic.parent().photoMosaic({
-                        modal_name : window.rlArgs.selector
-                    });
-                }',
+            wp_enqueue_script(
+                $this->plugin_name,
+                plugins_url('/'. $this->plugin_name .'.js', __FILE__ ),
+                array( $photomosaic->get_plugin_name() . '-localize' ),
+                $this->version,
                 true
             );
         }
